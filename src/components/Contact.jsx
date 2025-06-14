@@ -21,9 +21,17 @@ const Contact = () => {
     const sendEmail = async (formData) => {
         const { name, email, message } = formData;
 
+        const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+        const recipientEmail = import.meta.env.VITE_RECIPIENT_EMAIL;
+
+        if (!accessKey || !recipientEmail) {
+            console.error('Missing environment variables. Please check your .env file.');
+            throw new Error('Configuration error: Missing environment variables');
+        }
+
         // Create email content
         const emailContent = {
-            to: "sg25042023@gmail.com", // Replace with your email
+            to: recipientEmail, // Replace with your email
             subject: `New Contact Form Message from ${name}`,
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
@@ -59,13 +67,13 @@ const Contact = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    access_key: '5db52ec8-cb97-4c7a-9c5b-3d3f605a761d', // Get from https://web3forms.com
+                    access_key: accessKey, // Get from https://web3forms.com
                     name: name,
                     email: email,
                     message: message,
                     subject: `New Contact Form Message from ${name}`,
                     from_name: 'Your Website Contact Form',
-                    to: 'sg25042023@gmail.com' // Replace with your email
+                    to: recipientEmail // Replace with your email
                 })
             });
 
@@ -123,7 +131,8 @@ const Contact = () => {
                     sub="💬 Have questions or ideas? Let's talk! 🚀"
                 />
                 <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 mt-16">
-                    <div className="xl:col-span-5">
+                    {/* Contact Form - Full width on mobile, 5 columns on desktop */}
+                    <div className="xl:col-span-5 w-full">
                         <div className="flex items-center justify-center border border-gray-700 bg-gradient-to-br from-gray-900 to-black rounded-2xl p-8 shadow-2xl backdrop-blur-sm">
                             <form
                                 ref={formRef}
@@ -192,7 +201,9 @@ const Contact = () => {
                             </form>
                         </div>
                     </div>
-                    <div className="xl:col-span-7 h-[75vh]">
+
+                    {/* 3D Canvas - Hidden on mobile, visible on desktop */}
+                    <div className="hidden xl:block xl:col-span-7 h-[75vh]">
                         <div className="bg-zinc-900 w-full h-full hover:cursor-grab overflow-hidden">
                             <ContactCanvas />
                         </div>
@@ -204,3 +215,39 @@ const Contact = () => {
 };
 
 export default Contact;
+
+
+
+
+
+
+// const getBrowserSpecificPosition = (browser) => {
+//     if (mobile) {
+//         // Mobile positions - different for each browser
+//         switch (browser) {
+//             case 'chrome':
+//                 return [0, 1.75, -1.4];
+//             case 'firefox':
+//                 return [0, 1.65, -1.4];
+//             case 'edge':
+//                 return [0, 1.58, -1.4];
+//             case 'safari':
+//                 return [0, 1.60, -1.4];
+//             default:
+//                 return [0, 1.58, -1.4];
+//         }
+//     } else {
+//         switch (browser) {
+//             case 'chrome':
+//                 return [0,1.85,-1.4]; // Original position for Chrome
+//             case 'firefox':
+//                 return [0, 1.75, -1.4]; // Slightly higher for Firefox
+//             case 'edge':
+//                 return [0, 1.68, -1.4]; // Slightly lower for Edge
+//             case 'safari':
+//                 return [0, 1.70, -1.4]; // Custom position for Safari
+//             default:
+//                 return [0, 1.68, -1.4]; // Default position
+//         }
+//     }
+// }

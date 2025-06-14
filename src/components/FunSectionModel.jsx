@@ -25,7 +25,7 @@ export default function FunSectionModel()
                            position-y={ -1.3 }
                 >
                     <Html transform wrapperClass='htmlScreen' distanceFactor={1.17} position={[0,1.56,-1.4]} rotation-x={-0.256}>
-                        <iframe src='https://project-demos-two.vercel.app/' />
+                        <iframe src='https://portfoliosection.vercel.app/' />
                     </Html>
                 </primitive>
                 <Text
